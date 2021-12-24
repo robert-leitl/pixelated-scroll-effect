@@ -1,5 +1,6 @@
 import { Sketch } from './sketch';
 import { Pane } from 'tweakpane';
+import LocomotiveScroll from 'locomotive-scroll';
 
 let DEBUG = false;
 
@@ -12,14 +13,20 @@ let sketch;
 let resizeTimeoutId;
 
 window.addEventListener('load', () => {
-    const container = document.body;
+    const container = document.body.querySelector('.container');
 
     let pane;
     if (DEBUG) {
         pane = new Pane({ title: 'Settings' });
     }
 
-    sketch = new Sketch(container, pane);
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        getSpeed: true
+    });
+
+    sketch = new Sketch(container, scroll, pane);
     sketch.oninit = () => {
         sketch.run(); 
     }
