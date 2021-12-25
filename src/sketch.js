@@ -23,7 +23,8 @@ import mediaVertexShader from './shader/media-vertex.glsl';
 const mediaBgShader = {
     uniforms: {
         tDiffuse: { value: null },
-        u_scrollSpeed: { value: 0 }
+        u_scrollSpeed: { value: 0 },
+        u_resolution: { value: new Vector2(0, 0) }
     },
     vertexShader: bgVertexShader,
     fragmentShader: bgFragmentShader
@@ -53,6 +54,11 @@ export class Sketch {
 
         this.items.forEach((item) => this.#updateMediaRect(item));
 
+        if (this.bgShaderPass) {
+            this.bgShaderPass.uniforms.u_resolution.value.set(this.width, this.height);
+            this.bgShaderPass.uniforms.u_resolution.value.multiplyScalar(Math.min(window.devicePixelRatio, 2));
+        }
+        
         if (this.renderer) {
             this.renderer.setSize(this.width, this.height);
             this.#updateCamera();
@@ -68,7 +74,6 @@ export class Sketch {
     }
 
     #render() {
-        this.shaderMaterial.uniforms.uTime.value += 0.05;
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -88,11 +93,12 @@ export class Sketch {
     }
 
     #initScroll() {
+        this.scrollSpeedTarget = 0;
         this.scrollSpeed = 0;
         this.scrollY = 0;
 
         this.scroll.on('scroll', data => {
-            this.scrollSpeed += (data.speed - this.scrollSpeed) / 10;
+            this.scrollSpeedTarget = data.speed;
             this.scrollY = data.scroll.y;
 
             // force animation to keep scroll and webgl in sync
@@ -219,6 +225,8 @@ export class Sketch {
 
         if (this.scene && this.camera) {
             this.time += 0.05;
+
+            this.scrollSpeed += (this.scrollSpeedTarget - this.scrollSpeed) / 3
 
             // update the items
             this.items.forEach((item) => {

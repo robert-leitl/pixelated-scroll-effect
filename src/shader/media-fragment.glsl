@@ -25,5 +25,6 @@ void main() {
     uv = (uv + 1.) / 2.;
 
     gl_FragColor = vec4(textureR.r, textureG.g, textureB.b, 1.);
+    gl_FragColor = texture2D(u_texture, uv);
     //gl_FragColor = vec4(pointerDistance);
 }
