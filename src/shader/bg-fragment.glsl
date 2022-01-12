@@ -13,7 +13,7 @@ void main() {
     // init the pixel size with the scroll speed
     float pixelSize = abs(u_scrollSpeed * 0.6);
     // make the pixelation stronger at the top and bottom (offset by .5 to center each pixel)
-    pixelSize *= 5. * ((floor(abs(uv.y * uv.y) * 6.) + .5) / 6.);
+    pixelSize *= 7. * ((floor(abs(uv.y * uv.y) * 6.) + 1.) / 6.);
     // the pixel size has to be at least 1
     pixelSize += 1.;
 

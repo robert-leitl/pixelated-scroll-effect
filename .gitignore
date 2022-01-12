@@ -105,5 +105,6 @@ dist
 
 # Parcel.js cache folder
 .parcel-cache
+.idea
 
 .DS_Store

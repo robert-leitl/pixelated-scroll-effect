@@ -7,7 +7,7 @@ void main() {
     vec3 pos = position;
 
     // stretch on scroll
-    pos.y *= 1. + abs(u_scrollSpeed) * 0.015;
+    pos.y *= 1. + abs(u_scrollSpeed) * 0.005;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
 }
